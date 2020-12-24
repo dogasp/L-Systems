@@ -2,5 +2,5 @@ axiome = "---a"
 regles =
     "a=aa+[+a-a-a]-[-a+a+a]"
 angle = 22.5
-taille = 4
+taille = 10
 niveau = 4

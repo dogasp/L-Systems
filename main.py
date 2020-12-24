@@ -6,6 +6,7 @@ def setFileName():
     inputFileName = ""
     outputFileName = "resultat.py"
     args = sys.argv[1:]
+
     while len(args) > 1:
         if args[0] == '-i':
             inputFileName = args[1]
@@ -45,6 +46,7 @@ def readData(inputFileName):
                     config[3] = float(value)
                 elif parameter == "niveau":
                     config[4] = int(value)
+
     return config
 
 def generate(config):
@@ -57,18 +59,27 @@ def generate(config):
             else:
                 newPath += letter
         path = newPath
+
     return path
 
 def translate(processed, config):
     size = config[3]
     angle = config[2]
-    equivalent = {'a': f"pd();fd({size});", 'b': f"pu();fd({size});", '+': f"right({angle});", '-': f"left({angle});", '*': "right(180);", '[': "mem.append((pos(), heading()));", ']': "pu();tmp=mem.pop();goto(tmp[0]);seth(tmp[1]);"}
+    equivalent = {'a': f"pd();fd({size});", 
+                  'b': f"pu();fd({size});", 
+                  '+': f"right({angle});", 
+                  '-': f"left({angle});", 
+                  '*': "right(180);", 
+                  '[': "mem.append((pos(), heading()));", 
+                  ']': "pu();tmp=mem.pop();goto(tmp[0]);seth(tmp[1]);"}
+
     end = "exitonclick();"
     result = "from turtle import *\ncolor('black')\nspeed(0)\nmem=[]\n" #ajout de speed car trop lent sinon
 
     for letter in processed:
         if letter in equivalent.keys(): #implémentation du Stochastic L-system
             result += equivalent[letter] + "\n"
+
     result += end
     return result
 
@@ -81,9 +92,10 @@ def main():
     config = readData(inputFileName)
     processed = generate(config)
     result = translate(processed, config)
+
     print(result)
     saveResult(result, outputFileName)
+    exec(result)
     
-
 if __name__=='__main__' : 
     main()
