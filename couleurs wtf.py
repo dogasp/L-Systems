@@ -1,4 +1,4 @@
-from main import setFileName, readData, generate, saveResult
+from main import setFileName, readData, generate
 
 def translateWithColor(processed, config):
     size = config[3]
@@ -19,7 +19,8 @@ def mainColor():
     processed = generate(config)
     result = translateWithColor(processed, config)
     print(result)
-    saveResult(result, outputFileName)
+    with open(outputFileName, "w") as file:
+        file.write(result)
     exec(result)
     
 

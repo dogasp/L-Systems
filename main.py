@@ -22,6 +22,8 @@ def setFileName():
     return inputFileName, outputFileName
 
 def readData(inputFileName):
+    """Fonction pour lire les données du fichier en entrée 
+    et renvois une liste avec touts les paramètres"""
     config = ["", {}, 0, 0, 0] #axiome, regles, angle, taille, niveau
     with open(inputFileName, 'r') as file:
         data = file.read().split("\n")[:-1]
@@ -50,6 +52,8 @@ def readData(inputFileName):
     return config
 
 def generate(config):
+    """Fonction qui permet d'établir 
+    l'était du système au niveau demandé"""
     path = config[0]
     for _ in range(config[4]): #pour chaque niveau
         newPath = ""
@@ -63,6 +67,8 @@ def generate(config):
     return path
 
 def translate(processed, config):
+    """Fonction permettant de traduire
+    l'était du système en instruction turtle"""
     size = config[3]
     angle = config[2]
     equivalent = {'a': f"pd();fd({size});", 
@@ -83,18 +89,17 @@ def translate(processed, config):
     result += end
     return result
 
-def saveResult(result, outputFileName):
-    with open(outputFileName, "w") as file:
-        file.write(result)
-
 def main():
+    """Fonction principale qui execute toutes les autres fonctions"""
     inputFileName, outputFileName = setFileName()
     config = readData(inputFileName)
     processed = generate(config)
     result = translate(processed, config)
-
     print(result)
-    saveResult(result, outputFileName)
+
+    with open(outputFileName, "w") as file:
+        file.write(result)
+
     exec(result)
     
 if __name__=='__main__' : 
