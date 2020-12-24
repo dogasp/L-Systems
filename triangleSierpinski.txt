@@ -1,0 +1,7 @@
+axiome = "aXa--aa--aa"
+regles =
+    "a=aa"
+    "X=--aXa++aXa++aXa--"
+angle = 60
+taille = 10
+niveau = 5
