@@ -1,0 +1,6 @@
+axiome = "a[+a]a[-a]b[+a]a"
+regles =
+    "a>b>a=c"
+angle = 40
+taille = 10
+niveau = 1
