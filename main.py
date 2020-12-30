@@ -85,7 +85,6 @@ def checkContext(path, rule):
     l'endroit en cours et la regle à tester et renvois vrai 
     si la regle est respectée"""
     pos = []
-
     if (not (rule[1] == "" and rule[2] == "") and rule[1] != rule[0]) or rule[1] == rule[2] == "": #cas ou il y a un contexte à droite ou à gauche
         match = rule[1]
         reverse = False
@@ -110,7 +109,6 @@ def checkContext(path, rule):
                         tmp.pop(0)
                         tmp.append(path[index])
             index += 1
-
         
     elif rule[1] != "" and rule[2] != "": #cas ou il y a un contexte à droite et à gauche
         pos = list(set(checkContext(path, [rule[0], "", rule[2]])) & set(checkContext(path, [rule[0], rule[1], ""])))
