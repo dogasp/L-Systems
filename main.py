@@ -61,10 +61,10 @@ def readData(inputFileName):
     with open(inputFileName, 'r') as file:
         data = file.read()
         if fileIsValid(data):
-            data = data.split("\n")[:-1]
+            data = data.split("\n")
             for i in range(len(data)):
                 row = data[i]
-                if row[0] != " ":
+                if len(row) > 0 and row[0] != " ":
                     parameter, value = row.replace(" ", "").split("=")
 
                     if parameter == "regles":
@@ -133,6 +133,7 @@ def generate(config):
 def translate(processed, config):
     """Fonction permettant de traduire
     l'était du système en instruction turtle"""
+    print (processed, config)
     size = config[3]
     angle = config[2]
     equivalent = {'a': f"pd();fd({size});", 
@@ -141,7 +142,13 @@ def translate(processed, config):
                   '-': f"left({angle});", 
                   '*': "right(180);", 
                   '[': "mem.append((pos(), heading()));", 
-                  ']': "pu();tmp=mem.pop();goto(tmp[0]);seth(tmp[1]);"}
+                  ']': "pu();tmp=mem.pop();goto(tmp[0]);seth(tmp[1]);",
+                  'l': "pensize(6);",
+                  'm': "pensize(3);",
+                  's': "pensize(1);",
+                  'r': "pencolor('#FF0000');",
+                  'g': "pencolor('#00FF00');",
+                  'b': "pencolor('#0000FF');"}
 
     result = "from turtle import *\ncolor('black')\nspeed(0)\nmem=[]\n" #ajout de speed car trop lent sinon
 
@@ -164,7 +171,7 @@ def main():
         return False
     processed = generate(config)
     result = translate(processed, config)
-    #print(result)
+    print(result)
 
     with open(outputFileName, "w") as file:
         file.write(result)

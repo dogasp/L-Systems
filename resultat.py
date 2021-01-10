@@ -1,0 +1,20 @@
+from turtle import *
+color('black')
+speed(0)
+mem=[]
+left(30.0);
+left(30.0);
+left(30.0);
+pencolor('#FF0000');
+pensize(1);
+pd();fd(30.0);
+left(30.0);
+pencolor('#00FF00');
+pensize(3);
+pd();fd(30.0);
+left(30.0);
+pencolor('#0000FF');
+pensize(6);
+pd();fd(30.0);
+left(30.0);
+exitonclick();

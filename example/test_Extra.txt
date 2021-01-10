@@ -1,0 +1,6 @@
+axiome = "---a-"
+regles =
+    "a=rsa-gma-bla"
+angle = 30
+taille = 30
+niveau = 1
