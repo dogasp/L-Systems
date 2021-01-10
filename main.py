@@ -2,12 +2,11 @@ import sys
 
 constant = ["-", "+", "*"]
 
-def setFileName():
+def setFileName(args):
     """récupération des emplacements des fichiers si spécifiés 
     sinon le nom est demandé à l'utilisateur"""
     inputFileName = ""
     outputFileName = "resultat.py"
-    args = sys.argv[1:]
 
     while len(args) > 1:
         if args[0] == '-i':
@@ -118,7 +117,6 @@ def generate(config):
     """Fonction qui permet d'établir 
     l'était du système au niveau demandé"""
     path = config[0]
-    print(path)
     for _ in range(config[4]): #pour chaque niveau
         newPath = [""]*len(path)
         for rule in config[1].keys(): #pour chaque regle
@@ -129,7 +127,6 @@ def generate(config):
             if newPath[i] == "":
                 newPath[i] = path[i]
         path = "".join(newPath)
-        print("".join(path))
 
     return path
 
@@ -157,7 +154,8 @@ def translate(processed, config):
 
 def main():
     """Fonction principale qui execute toutes les autres fonctions"""
-    inputFileName, outputFileName = setFileName()
+    args = sys.argv[1:]
+    inputFileName, outputFileName = setFileName(args)
     if inputFileName == "":
         print("Aucun fichier n'as été spécifié avec le commutateur -i")
         return False
@@ -166,7 +164,7 @@ def main():
         return False
     processed = generate(config)
     result = translate(processed, config)
-    print(result)
+    #print(result)
 
     with open(outputFileName, "w") as file:
         file.write(result)
