@@ -51,7 +51,6 @@ def readRule(i, data):
         else:
             value[(symbole[2], symbole[0], symbole[4])] = regle
 
-    #vérifier validité des regles
     return value
 
 def readData(inputFileName):
@@ -67,7 +66,7 @@ def readData(inputFileName):
                 if len(row) > 0 and row[0] != " ":
                     parameter, value = row.replace(" ", "").split("=")
 
-                    if parameter == "regles":
+                    if parameter.replace("è", "e") == "regles":
                         config[1] = readRule(i, data)
                     elif parameter == "axiome":
                         config[0] = value.split('"')[1]
@@ -81,8 +80,7 @@ def readData(inputFileName):
 
 def checkContext(path, rule):
     """Fonction qui prend en entrée la chaine à vérifier, 
-    l'endroit en cours et la regle à tester et renvois vrai 
-    si la regle est respectée"""
+    et la regle à tester et renvois les emplacements où la regle est respectée"""
     pos = []
     if (not (rule[1] == "" and rule[2] == "") and rule[1] != rule[0]) or rule[1] == rule[2] == "": #cas ou il y a un contexte à droite ou à gauche
         match = rule[1]
