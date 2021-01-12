@@ -111,7 +111,6 @@ def checkContext(path, rule, constant):
     return pos
 
 def generate(config):
-    print(config)
     """Fonction qui permet d'établir 
     l'était du système au niveau demandé"""
     path = config[0]                                                           #path correspond à l'axiome
