@@ -1,0 +1,16 @@
+axiome = "aYaYaY"
+regles =
+    "X<X>X=X"
+    "X<X>X=X"
+    "X<X>Y=Y[+aYaY]"
+    "X<Y>X=Y"
+    "X<Y>Y=Y"
+    "Y<X>X=X"
+    "Y<X>Y=YaY"
+    "Y<Y>X=X"
+    "Y<Y>Y=X"
+    "+=-"
+    "-=+"
+angle = 22.5
+taille = 10
+niveau = 29

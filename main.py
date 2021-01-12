@@ -84,7 +84,7 @@ def checkContext(path, rule):
     """Fonction qui prend en entrée la chaine à vérifier
     et la regle à tester et renvois les emplacements où la regle est vérifiée"""
     pos = []
-    if (not (rule[1] == "" and rule[2] == "") and rule[1] != rule[0]) or rule[1] == rule[2] == "": #cas ou il y a un contexte à droite ou à gauche
+    if (rule[1] == "" or rule[2] == "") and not (rule[1] == "" and rule[2] == ""): #cas ou il y a un contexte à droite ou à gauche (porte xor)
         match = rule[1]                                                        #match correspond à la chaine à retrouver avant le symbole en question
         reverse = False                                                        #booléen qui mémorise si on va vers la droite (True) ou vers la gauche (False)
         if rule[2] !="":                                                       #si on regarde à droite, on inverse la liste, c'est le même algorithme
@@ -110,6 +110,7 @@ def checkContext(path, rule):
             index += 1
     elif rule[1] != "" and rule[2] != "":                                      #cas ou il y a un contexte à droite et à gauche, on fait l'union du contexte seulement à droite et le contexte seulement à gauche
         pos = list(set(checkContext(path, [rule[0], "", rule[2]])) & set(checkContext(path, [rule[0], rule[1], ""])))
+    if pos != []: print(pos, rule)
     return pos
 
 def generate(config):
@@ -121,11 +122,11 @@ def generate(config):
         for rule in config[1].keys():                                          #boucle pour chaque règle
             for place in checkContext(path, rule):                             #récupération des positions qui correspondent à la règle
                 newPath[place] = config[1][rule]                               #à chaque position, la valeur est attribuée
-
         for i in range(len(newPath)):                                          #pour chaque emplacement où newPath est vide, c'est qu'il n'y a pas de règle valide, le symbole est recopié
             if newPath[i] == "":
                 newPath[i] = path[i]
         path = "".join(newPath)                                                #modification de la variable path
+        print(path)
 
     return path
 
