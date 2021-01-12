@@ -13,4 +13,5 @@ regles =
     "-=+"
 angle = 22.5
 taille = 10
-niveau = 29
+niveau = 30
+constantes=-+a

@@ -1,7 +1,5 @@
 import sys
 
-constant = ["-", "+", "*"]                                                     #constantes (en dehors de toutes définitions car utilisé dans "test unitaires.py")
-
 def setFileName(args):
     """récupération des emplacements des fichiers si spécifiés 
     sinon le nom est demandé à l'utilisateur"""
@@ -52,13 +50,12 @@ def readRule(i, data):
         else:
             value[(symbole[2], symbole[0], symbole[4])] = regle                #Sinon c'est que c'est une règle multidirectionnelle
         d += 1
-
     return value
 
 def readData(inputFileName):
     """Fonction pour lire les données du fichier en entrée 
     et renvois une liste avec touts les paramètres"""
-    config = ["", {}, 0, 0, 0]                                                 #variable contenant la configuration (axiome, regles, angle, taille, niveau)
+    config = ["", {}, 0, 0, 0, []]                                                 #variable contenant la configuration (axiome, regles, angle, taille, niveau, constantes)
     with open(inputFileName, 'r') as file:                                     #lecture du fichier en entrée
         data = file.read()
         if fileIsValid(data):                                                  #vérification de la validité du fichier en entrée
@@ -78,13 +75,15 @@ def readData(inputFileName):
                         config[3] = float(value)
                     elif parameter == "niveau":
                         config[4] = int(value)
+                    elif parameter == "constantes":                            #récupération des constantes
+                        config[5] = value
     return config
 
-def checkContext(path, rule):
+def checkContext(path, rule, constant):
     """Fonction qui prend en entrée la chaine à vérifier
     et la regle à tester et renvois les emplacements où la regle est vérifiée"""
     pos = []
-    if (rule[1] == "" or rule[2] == "") and not (rule[1] == "" and rule[2] == ""): #cas ou il y a un contexte à droite ou à gauche (porte xor)
+    if not (rule[1] != "" and rule[2] != ""):                                  #cas ou il y a un contexte à droite ou à gauche (porte xor)
         match = rule[1]                                                        #match correspond à la chaine à retrouver avant le symbole en question
         reverse = False                                                        #booléen qui mémorise si on va vers la droite (True) ou vers la gauche (False)
         if rule[2] !="":                                                       #si on regarde à droite, on inverse la liste, c'est le même algorithme
@@ -94,23 +93,21 @@ def checkContext(path, rule):
         index = 0                                                              #index permet de parcourir path
         mem = []                                                               #mem permet de garder tmp en mémoire quand le programme explore une branche sous forme de pile
         tmp = [""] *len(match)                                                 #correspond aux len(match) derniers caractères parcourus
-        while index < len(path):
+        while index < len(path)-1:
+            if "".join(tmp) == match and path[index] == rule[0]:               #pour les autres lettres, si on obtient la séquence de match, et que le symbole est le bon, c'est qu'on a trouvé un emplacement
+                toappend = len(path) - index - 1 if reverse else index         #inversion de l'index si on travaille à l'envers (à droite)
+                pos.append(toappend)                                           #ajout de la position dans la liste des positions
             if path[index] not in constant:                                    #si la lettre parcourue n'est pas dans les constantes (voir ligne 3)
                 if path[index] == "[":                                         #si on rencontre une branche, on sauvegarde le tmp (l'historique) dans la pile
                     mem.append(tmp.copy())
                 elif path[index] == "]":                                       #récupération de l'élément en haut de la pile
                     tmp = mem.pop()
-                else:
-                    if "".join(tmp) == match and path[index] == rule[0]:       #pour les autres lettres, si on obtient la séquence de match, et que le symbole est le bon, c'est qu'on a trouvé un emplacement
-                        toappend = len(path) - index - 1 if reverse else index #inversion de l'index si on travaille à l'envers (à droite)
-                        pos.append(toappend)                                   #ajout de la position dans la liste des positions
-                    if tmp != []:                                              #si tmp n'est pas nul, on retire le dernier élément et on ajoute celui actuel (tmp est une file)
-                        tmp.pop(0)
-                        tmp.append(path[index])
+                elif tmp != []:                                                #si tmp n'est pas nul, on retire le dernier élément et on ajoute celui actuel (tmp est une file)
+                    tmp.pop(0)
+                    tmp.append(path[index])
             index += 1
-    elif rule[1] != "" and rule[2] != "":                                      #cas ou il y a un contexte à droite et à gauche, on fait l'union du contexte seulement à droite et le contexte seulement à gauche
-        pos = list(set(checkContext(path, [rule[0], "", rule[2]])) & set(checkContext(path, [rule[0], rule[1], ""])))
-    if pos != []: print(pos, rule)
+    else:                                                                      #cas ou il y a un contexte à droite et à gauche, on fait l'union du contexte seulement à droite et le contexte seulement à gauche
+        pos = list(set(checkContext(path, [rule[0], "", rule[2]], constant)) & set(checkContext(path, [rule[0], rule[1], ""], constant)))
     return pos
 
 def generate(config):
@@ -120,14 +117,13 @@ def generate(config):
     for _ in range(config[4]):                                                 #pour chaque niveau
         newPath = [""]*len(path)                                               #création d'une nouvelle variable qui contiendra le résultat
         for rule in config[1].keys():                                          #boucle pour chaque règle
-            for place in checkContext(path, rule):                             #récupération des positions qui correspondent à la règle
+            for place in checkContext(path, rule, config[5]):                             #récupération des positions qui correspondent à la règle
                 newPath[place] = config[1][rule]                               #à chaque position, la valeur est attribuée
         for i in range(len(newPath)):                                          #pour chaque emplacement où newPath est vide, c'est qu'il n'y a pas de règle valide, le symbole est recopié
             if newPath[i] == "":
                 newPath[i] = path[i]
         path = "".join(newPath)                                                #modification de la variable path
         print(path)
-
     return path
 
 def translate(processed, config):
