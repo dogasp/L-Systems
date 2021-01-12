@@ -93,7 +93,7 @@ def checkContext(path, rule, constant):
         index = 0                                                              #index permet de parcourir path
         mem = []                                                               #mem permet de garder tmp en mémoire quand le programme explore une branche sous forme de pile
         tmp = [""] *len(match)                                                 #correspond aux len(match) derniers caractères parcourus
-        while index < len(path)-1:
+        while index < len(path):
             if "".join(tmp) == match and path[index] == rule[0]:               #pour les autres lettres, si on obtient la séquence de match, et que le symbole est le bon, c'est qu'on a trouvé un emplacement
                 toappend = len(path) - index - 1 if reverse else index         #inversion de l'index si on travaille à l'envers (à droite)
                 pos.append(toappend)                                           #ajout de la position dans la liste des positions
@@ -111,6 +111,7 @@ def checkContext(path, rule, constant):
     return pos
 
 def generate(config):
+    print(config)
     """Fonction qui permet d'établir 
     l'était du système au niveau demandé"""
     path = config[0]                                                           #path correspond à l'axiome
@@ -123,7 +124,6 @@ def generate(config):
             if newPath[i] == "":
                 newPath[i] = path[i]
         path = "".join(newPath)                                                #modification de la variable path
-        print(path)
     return path
 
 def translate(processed, config):
