@@ -83,7 +83,7 @@ def checkContext(path, rule, constant):
     """Fonction qui prend en entrée la chaine à vérifier
     et la regle à tester et renvois les emplacements où la regle est vérifiée"""
     pos = []
-    if not (rule[1] != "" and rule[2] != ""):                                  #cas ou il y a un contexte à droite ou à gauche (porte xor)
+    if not (rule[1] != "" and rule[2] != ""):                                  #cas ou il y a un contexte à droite ou à gauche (porte nand)
         match = rule[1]                                                        #match correspond à la chaine à retrouver avant le symbole en question
         reverse = False                                                        #booléen qui mémorise si on va vers la droite (True) ou vers la gauche (False)
         if rule[2] !="":                                                       #si on regarde à droite, on inverse la liste, c'est le même algorithme

@@ -13,14 +13,14 @@ class MyTest(unittest.TestCase):
             self.assertFalse(fileIsValid(f.read()))
 
     def test_readData(self):                                                    #test de la lecture des paramètres (avec un L-system classique et un context sensitive L-system)
-        self.assertEqual(readData("tests/buisson.txt"), ['--a', {('a', '', ''): 'aa+[+a[+a]-a+a]-[-a-[a]+a]'}, 30.0, 10.0, 4])
-        self.assertEqual(readData("tests/context.txt"), ['a[+a]a[-a]a[+a]b', {('a', '', 'b'): 'b'}, 40.0, 10.0, 3])
+        self.assertEqual(readData("tests/buisson.txt"), ['--a', {('a', '', ''): 'aa+[+a[+a]-a+a]-[-a-[a]+a]'}, 30.0, 10.0, 4, []])
+        self.assertEqual(readData("tests/context.txt"), ['a[+a]a[-a]a[+a]b', {('a', '', 'b'): 'b'}, 40.0, 20.0, 3, "-+"])
 
     def test_generate(self):                                                    #test de la génération à partir d'une configuration classique et une context-sensitive(exemple pris sur Wikipedia)
-        config = ['--a', {('a', '', ''): 'aa+[+a[+a]-a+a]-[-a-[a]+a]'}, 30.0, 10.0, 1]
+        config = ['--a', {('a', '', ''): 'aa+[+a[+a]-a+a]-[-a-[a]+a]'}, 30.0, 10.0, 1, []]
         self.assertEqual(generate(config), "--aa+[+a[+a]-a+a]-[-a-[a]+a]")
 
-        config = ['a[+a]a[-a]a[+a]b', {('a', '', 'b'): 'b'}, 40.0, 10.0, 1]
+        config = ['a[+a]a[-a]a[+a]b', {('a', '', 'b'): 'b'}, 40.0, 10.0, 1, "-+"]
         self.assertEqual(generate(config), 'a[+a]a[-a]b[+b]b')
 
     def test_translate(self):                                                   #test de la fonction de conversion de la chaine de caractère vers du code python pour turtle

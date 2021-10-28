@@ -4,3 +4,4 @@ regles =
 angle = 40
 taille = 20
 niveau = 3
+constantes=-+
